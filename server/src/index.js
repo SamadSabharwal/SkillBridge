@@ -34,6 +34,7 @@ app.use(cors({
 
 app.use(express.json({ limit: '100kb' }));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 80, standardHeaders: 'draft-7', legacyHeaders: false }));
+app.get('/', (_, res) => res.json({ message: 'SkillBridge API is running', health: '/health', status: 'operational' }));
 app.get('/health', (_, res) => res.json({ ok: true }));
 app.use('/api', api);
 app.use((req, res) => res.status(404).json({ message: 'Route not found' }));
