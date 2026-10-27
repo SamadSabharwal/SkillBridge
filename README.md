@@ -1,211 +1,432 @@
-# SkillBridge — Hybrid Freelance Marketplace
+SkillBridge — Freelancing Marketplace
 
-A full-stack MERN application combining **Upwork-style project bidding** with **Fiverr-style service listings**. Clients can post projects and hire freelancers through proposals, or request a freelancer's fixed-price service. Both paths include work delivery, client approval, and revision requests.
+SkillBridge is a full-stack freelancing marketplace built using the MERN stack. It connects clients looking for skilled professionals with freelancers searching for work opportunities.
 
-## Problem and target users
+The platform allows clients to post projects, receive proposals, hire freelancers, manage contracts, and make payments. Freelancers can discover projects, submit proposals, list their services, communicate with clients, and manage their work through a unified dashboard.
 
-Small businesses and individual clients need a clear way to find freelance talent and manage deliverables. Freelancers need a place to discover project opportunities and offer packaged services. SkillBridge connects both sides with two distinct hiring workflows.
+1. Project Name
 
-## Features (16 requested capabilities)
+SkillBridge — A Full-Stack Freelancing Marketplace
 
-1. Authentication: registration, login, JWT, password hashing and client/freelancer roles.
-2. Project marketplace: post, browse and search client projects.
-3. Proposal system: submit bids, inspect proposals and hire a freelancer.
-4. Service marketplace: freelancers publish fixed-price services; clients request them.
-5. Contract/order management: work submission, approval, revisions and completion.
-6. Freelancer profiles: skills, bio and portfolio links.
-7. Dashboards: proposals, active/completed work and completed contract values.
-8. Ratings and reviews: one review per completed contract or order.
-9. Skill-based recommendations: ranked project matches using skill overlap.
-10. Client/freelancer messaging: messages persisted in MongoDB, manually refreshed.
-11. Budget-based filtering and sorting: min/max budgets and price order.
-12. Skill-match percentages: percentage of required skills matching a freelancer profile.
-13. Dashboard statistics: work counts, contract values and freelancer average ratings.
-14. Profile editing: update bio, skills and portfolio link.
-15. Persistent conversations: messages stored and retrieved for contracts/orders.
-16. Authorization for reviews and conversations: participants only; only the owning client can review completed work.
+2. Problem Statement
 
-### Scope and limitations
+Finding reliable freelancers and managing freelance projects can be challenging for clients. Similarly, freelancers often struggle to discover suitable opportunities, communicate with clients, and manage their work efficiently.
 
-- Messaging is **not live WebSocket messaging**; users manually refresh conversations.
-- No real payments, file storage or automatic email notifications.
-- Skill matching uses deterministic overlap rather than an AI model.
-- This is a source-code implementation; end-to-end verification against your own Atlas instance and deployment are still required.
+Many freelancing workflows involve multiple activities, including project discovery, hiring, communication, contract management, and payment processing.
 
-## Tech stack
+SkillBridge aims to simplify these activities by bringing them together into a single platform.
 
-React + Vite, plain CSS, Axios, Lucide icons, Node.js, Express, MongoDB, Mongoose, JWT, bcryptjs, Helmet, CORS, express-rate-limit.
+3. Target Users
 
-## Architecture
+SkillBridge is designed for two primary types of users.
 
-```
-client/src/main.jsx (React UI) ---> Axios ---> server/src/index.js (Express)
-                                                  |
-                                           routes/api.js
-                                                  |
-                                       middleware/auth.js
-                                                  |
-                                        models/index.js
-                                                  |
-                                              MongoDB
-```
+Clients
 
-### Models
+Individuals, startups, and businesses looking to hire freelancers for specific projects.
 
-`User`, `Project`, `Proposal`, `Contract`, `Service`, `Order`, `Review`, `Message`. A proposal is unique per `(project, freelancer)`; a contract is unique per project and accepted proposal. Project hiring is performed in a MongoDB transaction to prevent concurrent double hires.
+Clients can:
 
-## Local setup
+* Post projects with descriptions, budgets, and required skills.
+* Browse freelancer services.
+* Review proposals submitted by freelancers.
+* Hire freelancers and manage contracts.
+* Communicate with freelancers.
+* Make payments and review completed work.
 
-Requires Node.js 20+ and **MongoDB Atlas or a local MongoDB replica set**. Standalone local MongoDB is sufficient for most routes but **cannot perform the proposal-acceptance transaction**.
+Freelancers
 
-1. Create a MongoDB Atlas cluster (free tier is sufficient for development), configure its network access, and get a connection string.
-2. In `server`, copy `.env.example` to `.env` and set `MONGO_URI`, a long random `JWT_SECRET`, and `CLIENT_URL`.
-3. In `client`, copy `.env.example` to `.env` and set `VITE_API_URL`.
-4. Run these commands in separate terminals:
+Individuals who want to offer their skills and find freelance opportunities.
 
-```bash
+Freelancers can:
+
+* Discover projects based on their skills.
+* Submit proposals and bid on projects.
+* Create and manage service listings.
+* Communicate with clients.
+* Submit completed work.
+* Track their contracts and orders.
+
+4. Solution
+
+SkillBridge provides a centralized marketplace where clients and freelancers can manage the complete freelancing process.
+
+The platform supports two primary workflows.
+
+Project-Based Hiring
+
+1. A client creates a project with a description, budget, and required skills.
+2. Freelancers discover the project through search and filters.
+3. Interested freelancers submit proposals.
+4. The client reviews proposals and selects a freelancer.
+5. A contract is created between the client and freelancer.
+6. The users communicate and manage the work.
+7. The freelancer submits the completed work.
+8. The client reviews the submission and can request revisions or approve completion.
+
+Service-Based Hiring
+
+1. A freelancer creates a service listing.
+2. Clients browse available services.
+3. A client selects a service and places an order.
+4. The order is managed through the platform.
+5. The freelancer completes the requested work.
+
+These workflows reduce the need to manage freelance projects across multiple applications.
+
+5. Key Features
+
+Authentication and User Management
+
+* User registration and login.
+* JWT-based authentication.
+* Secure password hashing using bcrypt.
+* Client and freelancer roles.
+* Protected API endpoints.
+* User profiles.
+
+Project Marketplace
+
+* Create and browse freelance projects.
+* Add project descriptions, budgets, and required skills.
+* Search projects using keywords.
+* Filter projects by skills and budget.
+* Sort and explore available opportunities.
+
+Proposals and Hiring
+
+* Freelancers can submit proposals.
+* Clients can review proposals.
+* Clients can accept proposals and hire freelancers.
+* Accepted proposals are connected to contracts.
+
+Freelancer Services
+
+* Freelancers can create service listings.
+* Clients can browse available services.
+* Service-based ordering functionality.
+
+Contract Management
+
+* Contract creation and tracking.
+* Work submission by freelancers.
+* Revision requests.
+* Work approval and completion tracking.
+
+Payments
+
+* Razorpay Test Mode integration.
+* Payment order creation through the backend.
+* Payment signature verification.
+* Payment records stored in MongoDB.
+* Payment status tracking.
+
+Note: Razorpay is integrated in Test Mode for demonstration purposes. The application does not process real-money transactions in this configuration.
+
+Messaging
+
+* Communication between clients and freelancers.
+* Persistent message storage.
+* Conversation management.
+
+Dashboards
+
+* Role-based dashboard functionality.
+* Project and proposal information.
+* Contract and order tracking.
+* Overview of relevant marketplace activities.
+
+Ratings and Reviews
+
+* Review functionality for completed work.
+* Ratings to help users evaluate their experience.
+
+User Experience
+
+* Responsive marketplace interface.
+* Search and filtering.
+* Form validation.
+* Loading and error feedback.
+* Reusable interface components.
+
+6. Tech Stack
+
+Frontend
+
+* React.js — Building the user interface.
+* Vite — Frontend development and build tooling.
+* JavaScript — Application logic.
+* CSS — Styling and responsive layouts.
+
+Backend
+
+* Node.js — JavaScript runtime.
+* Express.js — REST API development.
+* JWT — Authentication.
+* bcrypt — Password hashing.
+
+Database
+
+* MongoDB Atlas — Cloud-hosted database.
+* Mongoose — MongoDB object modeling and database operations.
+
+Payment Integration
+
+* Razorpay Test Mode — Demonstration payment processing and verification.
+
+Development Tools
+
+* Git — Version control.
+* GitHub — Source code hosting.
+* Visual Studio Code — Development environment.
+* npm — Package management.
+
+7. Architecture
+
+SkillBridge follows a client-server architecture.
+
+                    USER
+                     |
+                     v
+             React Frontend
+               (Vite + CSS)
+                     |
+                     | HTTP Requests
+                     v
+              Express REST API
+                (Node.js)
+                     |
+          +----------+----------+
+          |          |          |
+          v          v          v
+     Authentication Projects  Payments
+          |          |          |
+          +----------+----------+
+                     |
+                     v
+                Mongoose
+                     |
+                     v
+               MongoDB Atlas
+
+Frontend Architecture
+
+The frontend is developed using React and Vite.
+
+It is responsible for:
+
+* Displaying marketplace pages and dashboards.
+* Managing user interactions.
+* Handling forms and navigation.
+* Sending requests to backend APIs.
+* Displaying project, proposal, contract, and payment information.
+
+The frontend also uses reusable components and custom hooks for selected functionality.
+
+Backend Architecture
+
+The backend is developed using Node.js and Express.js.
+
+It provides REST APIs for:
+
+* Authentication
+* Projects
+* Proposals
+* Contracts
+* Freelancer services
+* Orders
+* Payments
+* Messaging
+* Reviews
+* Freelancer information
+* Dashboard data
+
+The backend uses middleware for authentication and authorization.
+
+Database Architecture
+
+MongoDB Atlas stores application data, including:
+
+* Users
+* Projects
+* Proposals
+* Contracts
+* Services
+* Orders
+* Payments
+* Messages
+* Reviews
+
+Mongoose is used to define data models and perform database operations.
+
+Payment Architecture
+
+Payment processing is handled through the backend.
+
+1. The frontend initiates a payment request.
+2. The backend creates a Razorpay test order.
+3. Razorpay Checkout handles the payment interaction.
+4. The backend verifies the payment details and signature.
+5. Verified payment information is stored in MongoDB.
+
+This approach helps prevent the frontend from directly controlling payment verification.
+
+8. Local Setup
+
+Prerequisites
+
+Ensure the following are installed or available:
+
+* Node.js
+* npm
+* Git
+* MongoDB Atlas database
+* Razorpay Test Mode credentials
+
+Step 1: Clone the Repository
+
+git clone https://github.com/SamadSabharwal/SkillBridge.git
+
+Navigate to the project directory:
+
+cd SkillBridge
+
+Step 2: Install Backend Dependencies
+
 cd server
 npm install
-npm run dev
-```
 
-```bash
-cd client
+Step 3: Configure Backend Environment Variables
+
+Create a .env file inside the server directory.
+
+Add the required environment variables described in the next section.
+
+Step 4: Start the Backend
+
+npm run dev
+
+The backend will start on the port configured for the application.
+
+Step 5: Install Frontend Dependencies
+
+Open another terminal and navigate to the frontend directory:
+
+cd SkillBridge/client
 npm install
+
+If you are already inside the server directory, use:
+
+cd ../client
+npm install
+
+Step 6: Start the Frontend
+
 npm run dev
-```
 
-Visit `http://localhost:5173`. API health check: `http://localhost:8080/health`.
+Vite will display a local development URL in the terminal.
 
-## Environment variables
+Open that URL in your browser to access SkillBridge.
 
-| Location | Variable | Meaning |
-|---|---|---|
-| server | `MONGO_URI` | MongoDB connection string |
-| server | `JWT_SECRET` | Secret string at least 32 characters |
-| server | `PORT` | API port, defaults to 8080 |
-| server | `CLIENT_URL` | Allowed frontend origin; comma-separated origins supported |
-| client | `VITE_API_URL` | Public API base URL, ending with `/api` |
+Step 7: Build the Frontend
 
-**Never commit `.env` or credentials.** Use production environment variable settings on the hosting platforms.
+To generate a production build:
 
-## Deployment
+npm run build
 
-- Backend: deploy `server/` as a Node service on Render, with build command `npm install`, start command `npm start`, and the server environment variables configured.
-- Frontend: deploy `client/` to Vercel with build command `npm run build`, output directory `dist`, and `VITE_API_URL=https://YOUR-BACKEND/api`.
-- Set backend `CLIENT_URL=https://YOUR-FRONTEND` and ensure MongoDB Atlas allows connections from the backend. Use HTTPS in production.
-- Verify `/health`, registration, and both end-to-end workflows on the **deployed** URLs before submission.
+The generated production files will be placed in the frontend build directory.
 
-**Deployment links:** Not deployed yet; replace this note with real links after deployment.
+9. Environment Variables
 
-## Demo script (3–5 minutes)
+SkillBridge uses environment variables to manage sensitive configuration.
 
-1. Register a client account and post a project.
-2. Register a freelancer account and send a proposal.
-3. Return to the client account and hire that freelancer.
-4. As freelancer, submit a work link; as client, approve it.
-5. As freelancer, list a service; as client, request it.
-6. Accept the request, submit the work, and request a revision or approve.
-7. Briefly show backend validation/authorization and the responsive dashboard.
+Create a .env file inside the server directory.
 
-## Testing checklist
+Backend Environment Variables
 
-- [ ] Register both roles; login; invalid password rejected.
-- [ ] Freelancer cannot post projects; client cannot create services.
-- [ ] Duplicate proposals rejected.
-- [ ] Only project owner can view and accept proposals.
-- [ ] One accepted proposal per project; other proposals rejected.
-- [ ] Freelancer submits work; client approves or requests changes.
-- [ ] Client requests service; freelancer accepts or declines; submission/approval works.
-- [ ] Refresh browser and confirm data persists.
-- [ ] Verify deployed frontend/backend from an incognito window.
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_jwt_secret_at_least_32_characters
+PORT=8080
+RAZORPAY_KEY_ID=your_razorpay_test_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_test_key_secret
 
-## Submission
+Explanation
 
-Fill in project name, student name, problem statement, repository URL, deployment URL, demo video, stack, and major features in the official form. This code package is a starting application, **not an already deployed or submitted project**.
+Variable	Purpose
+MONGO_URI	MongoDB Atlas connection string
+JWT_SECRET	Secret used to sign and verify authentication tokens
+PORT	Backend server port
+RAZORPAY_KEY_ID	Razorpay Test Mode key identifier
+RAZORPAY_KEY_SECRET	Razorpay Test Mode secret key
 
-## Version 2 additions (10-feature upgrade)
+Security Notes
 
-The marketplace now includes authentication, project discovery and filtering, proposals and hiring, freelancer service listings and orders, contract submission/revisions, editable freelancer profiles, dashboard metrics, client ratings/reviews, skill-match project recommendations, and persistent work-specific messaging.
+* Never commit .env files to GitHub.
+* Never expose database passwords or JWT secrets.
+* Keep Razorpay secret keys on the backend.
+* Use Test Mode credentials when demonstrating payments.
+* Configure environment variables securely on the deployment platform.
 
-### New routes
-- `GET /api/dashboard` — role-specific counts, active/completed work and completed contract value (not real payments).
-- `GET /api/recommendations` — projects ranked by overlap with the signed-in freelancer's skills.
-- `GET /api/freelancers/:id` — public profile and reviews; `GET /api/freelancers` — directory.
-- `POST /api/reviews`, `GET /api/reviews/mine` — one client review per completed contract or order.
-- `GET/POST /api/messages/:type/:id` — persistent messages for contract/order participants only. Messaging uses manual refresh, **not WebSockets**.
-- `PATCH /api/auth/me` — bio, skills, portfolio URL.
-- `GET /api/projects` and `GET /api/services` — search, price bounds and sort; projects also support skill filtering.
+10. Deployment
 
-### Important testing notes
-Run `npm install` inside both `server` and `client`. Keep `server/.env` local; never commit credentials. Test both roles with separate accounts, hiring, orders, revisions, reviews, recommendations and messaging. No payment processing is implemented. This release has static checks but **has not been end-to-end tested against your MongoDB Atlas instance or deployed**.
+SkillBridge consists of a React frontend and an Express backend connected to MongoDB Atlas.
 
+Live Application
 
-## Marketplace search and filter controls (V4)
-- Search results refresh automatically 250 ms after the user stops typing; no Search click is required.
-- Skill, minimum/maximum budget, and sort are draft inputs until **Apply filters** is clicked.
-- **Apply filters** and **Remove filters** are dimmed/disabled when no draft or applied filters exist.
-- **Remove filters** resets all inputs and applied filters to defaults, including recommendation mode.
-- Test both Projects and Services with a keyword, apply a budget range, then remove filters.
+Frontend URL:
 
+[ADD YOUR DEPLOYED FRONTEND LINK HERE]
 
-## V5: Live skill search
-- The skill field automatically applies after a 250ms debounce; the Apply Filters button remains available for budget and sorting choices.
-- Skill matching is case-insensitive and matches partial skill names (e.g., `node`, `node.js`, and `Node.js` all match the stored `Node.js` skill).
-- Remove Filters clears the skill search, budget and sorting selections.
-- Skill matching happens on the server using an escaped MongoDB regular expression.
+Backend URL:
 
+[ADD YOUR DEPLOYED BACKEND LINK HERE]
 
-## Razorpay test payments (V6)
+GitHub Repository
 
-1. In the Razorpay Dashboard, switch to **Test Mode** and generate Test API keys.
-2. Set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` in `server/.env`. Never commit that file.
-3. Run `npm install` in **both** `server` and `client` after extracting the ZIP.
-4. Log in as client, accept a project proposal (or have a freelancer accept a service request), then open **My work → Pay Now (Test)**.
-5. Complete a simulated Razorpay checkout. The backend checks the HMAC signature, fetches the payment, and confirms it is captured with the correct order, amount and currency.
-6. Payment records are persisted in MongoDB and visible to both participants as `Paid (Test)`; freelancers must wait for payment before submitting work.
+SkillBridge — GitHub Repository
 
-This is **not escrow**, does not transfer money to freelancers, and is **not production-ready**. A real marketplace needs payout/settlement workflows, webhooks with raw-body signature validation, robust retry/idempotency and reconciliation, and additional testing. Existing projects and service listings persist if you use the same MongoDB URI.
+Deployment Configuration
 
+The deployment requires:
 
-## V7 payment button state fix
+1. Hosting the frontend application.
+2. Hosting the Express backend.
+3. Configuring the MongoDB Atlas connection.
+4. Adding the required environment variables to the backend hosting platform.
+5. Configuring the frontend to communicate with the deployed backend.
+6. Ensuring the deployed application is publicly accessible.
 
-Only the Pay Now button for the currently processing contract/order displays **Processing...**. Other payment buttons retain their labels and are temporarily disabled to prevent duplicate concurrent checkouts. The state is reset after success, failure, or checkout cancellation.
+11. Demo Video
 
+A demonstration video showcasing the main features and workflows of SkillBridge.
 
-### V8 message composer fix
-After a message is successfully sent, the message input is cleared automatically. On send failure, the typed text remains available to retry.
+Demo Video Link:
 
-## V9 readability and message composer fix
-- JavaScript and JSX sources have been reformatted with consistent indentation and line breaks.
-- Work messages now use a controlled draft input, clear only after a successful send, and disable the Send button while submitting.
-- If sending fails, the draft remains available for retry.
+[ADD YOUR DEMO VIDEO LINK HERE]
 
+The demonstration covers:
 
-## V10: Modular, readable source code
+* Application overview.
+* Authentication and user roles.
+* Project creation.
+* Project search and filtering.
+* Proposal submission.
+* Freelancer hiring.
+* Contract management.
+* Razorpay Test Mode payment.
+* Messaging.
+* Work submission and completion.
+* User dashboards.
 
-Frontend folders:
-- `client/src/components/` — reusable marketplace card and status badge
-- `client/src/hooks/usePayments.js` — Razorpay checkout and payment state
-- `client/src/hooks/useMessages.js` — message submission, draft clearing and conversation loading
-- `client/src/lib/` — API client and formatting helpers
-- `client/src/main.jsx` — application layout and page workflows
+12. Conclusion
 
-Backend folders:
-- `server/src/routes/modules/` — separate auth, projects, proposals, contracts, services, orders, freelancers, dashboard, reviews, messages and payments route modules
-- `server/src/routes/helpers.js` — shared validation and request helpers
-- `server/src/routes/api.js` — registers each feature's routes
+SkillBridge demonstrates the development of a full-stack freelancing marketplace using the MERN stack.
 
-Use `npm install` separately in `server` and `client`. Copy your existing working `server/.env` into the extracted project (the ZIP intentionally excludes credentials).
+The project integrates frontend development, backend REST APIs, database management, authentication, authorization, marketplace workflows, and payment verification.
 
+By combining project hiring, freelancer services, communication, contract management, and payments into a single application, SkillBridge provides a practical solution for connecting clients and freelancers.
 
-## Final submission checks
+⸻
 
-1. Copy `server/.env.example` to `server/.env`, then configure `MONGO_URI`, a `JWT_SECRET` of at least 32 characters, and optional Razorpay **test** keys. Never commit `.env`.
-2. In `server/`, run `npm install && npm run dev`. Confirm `/health` responds successfully. If port 8080 is in use, stop the other server.
-3. In `client/`, run `npm install && npm run build` and then `npm run dev`.
-4. Test client registration, project creation, freelancer proposal, proposal acceptance, test payment, messages, service ordering, delivery, and review using two accounts.
-5. Verify desktop and mobile layout, empty results, invalid inputs, unauthorized actions, and failed payments.
-6. Before pushing to GitHub, run `git status --ignored` and ensure `.env`, credentials, `node_modules`, and `dist` are excluded.
-
-**Note:** A Razorpay test checkout does not transfer funds to freelancers or implement escrow.
+Developed by: Samad Sabharwal
+Project: SkillBridge
+Technology: MERN Stack
