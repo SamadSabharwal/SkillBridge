@@ -374,11 +374,11 @@ Live Application
 
 Frontend URL:
 
-[ADD YOUR DEPLOYED FRONTEND LINK HERE]
+https://skill-bridge-pi-eight.vercel.app/
 
 Backend URL:
 
-[ADD YOUR DEPLOYED BACKEND LINK HERE]
+https://dashboard.render.com/project/prj-dbgadj4ipgvc73f0j1hg/environment/evm-dbgadj4ipgvc73f0j1i0
 
 GitHub Repository
 
