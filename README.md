@@ -401,14 +401,13 @@ A demonstration video showcasing the main features and workflows of SkillBridge.
 
 Demo Video Link:
 
-[ADD YOUR DEMO VIDEO LINK HERE]
+https://drive.google.com/file/d/14FO3U1ks7B9uQET8nQ0GoeL_faZo74x3/view?usp=sharing
 
 The demonstration covers:
 
 * Application overview.
 * Authentication and user roles.
 * Project creation.
-* Project search and filtering.
 * Proposal submission.
 * Freelancer hiring.
 * Contract management.
